@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const members = require('./Members');
 const logger = require('./middleware/logger');
 
 const app = express();
@@ -8,30 +7,10 @@ const app = express();
 // // inicia middleware
 // app.use(logger);
 
-// abaixo estao sendo usadas req e res de 'express', nao as nativas de 'node'
-// rota abaixo pega todos os membros
-app.get('/api/members', (req, res) => {
-    // metodo 'json' se encarrega de tratar o JSON para string
-    // express.json([options])
-    res.json(members);
-})
-
-// pega unico member
-app.get('/api/members/:id', (req, res) => {
-  const found = members.some(member => member.id === parseInt(req.params.id))
-
-  if (found) {
-    // res.send(req.params.id); // retorna o numero da id do usuario passado na url
-    // abaixo, 'req.params.id' esta dentro de um parseInt pois seu tipo inicial eh uma string
-    res.json(members.filter(member => member.id === parseInt(req.params.id)));    
-  } else {
-    // se nao houver membro com a id especificada, manda um status 400
-    res.status(400).json({
-      msg: `No member with the id ${req.params.id} found...`
-    });
-  }
-
-})
+// middleware body parser
+app.use(express.json());
+// linha abaixo trata encoded data de forms
+app.use(express.urlencoded({ extended: false }));
 
 // declara diretorio estatico
 // use() eh metodo nativo de 'node'
@@ -39,6 +18,9 @@ app.get('/api/members/:id', (req, res) => {
 // ver http://expressjs.com/en/api.html#express.static
 // express.static(root, [options])
 app.use(express.static(path.join(__dirname, 'public'))); 
+
+// route da api de members
+app.use('/api/members', require('./routes/api/members'));
 
 // // declara como o servidor lida com get para '/'
 // // abaixo estao sendo usadas req e res de 'express', nao as nativas de 'node'
