@@ -10,14 +10,16 @@ const app = express();
 // middleware body parser
 app.use(express.json());
 // linha abaixo trata encoded data de forms
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+   extended: false
+}));
 
 // declara diretorio estatico
 // use() eh metodo nativo de 'node'
 // metodo 'static' lida com headers que definem tipo dos arquivos requisitados, cache e outros; definidos no parametro 'options'
 // ver http://expressjs.com/en/api.html#express.static
 // express.static(root, [options])
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(express.static(path.join(__dirname, 'public')));
 
 // route da api de members
 app.use('/api/members', require('./routes/api/members'));
