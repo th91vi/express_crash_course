@@ -20,7 +20,7 @@
   "homepage": "https://github.com/th91vi/express_crash_course#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
